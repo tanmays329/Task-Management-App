@@ -4,15 +4,17 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(express.json());    
+app.use(express.json());      // <-- This must come BEFORE routes
 
-// test route
+app.use("/api/auth", authRoutes);
+
 app.get("/", (req, res) => {
-    res.send("Task Management App API is running...");
+    res.send("Task Management API is running...");
 });
 
 module.exports = app;
