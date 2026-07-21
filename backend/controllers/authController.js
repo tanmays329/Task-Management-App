@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
+// ================= REGISTER =================
 exports.registerUser = async (req, res) => {
     try {
 
@@ -33,12 +34,77 @@ exports.registerUser = async (req, res) => {
         res.status(201).json({
             success: true,
             message: "User registered successfully",
-            data: user
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
         });
 
     } catch (error) {
 
         res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+};
+
+
+// ================= LOGIN =================
+exports.loginUser = async (req, res) => {
+    try {
+
+        // Get email and password from request body
+        const { email, password } = req.body;
+
+        // Check if all fields are provided
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and Password are required"
+            });
+        }
+
+        // Check if user exists
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Compare entered password with hashed password
+        const isPasswordMatched = await bcrypt.compare(
+            password,
+            user.password
+        );
+
+        // If password is incorrect
+        if (!isPasswordMatched) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Credentials"
+            });
+        }
+
+        // Login successful
+        return res.status(200).json({
+            success: true,
+            message: "Login Successful",
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
             success: false,
             message: error.message
         });
