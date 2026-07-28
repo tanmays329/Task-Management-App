@@ -41,14 +41,35 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
 
-        const tasks = await Task.find({ user: req.user.id });
+        const { search, status } = req.query;
+
+        let filter = {
+            user: req.user.id
+        };
+
+        // Search by title
+        if (search) {
+            filter.title = {
+                $regex: search,
+                $options: "i"
+            };
+        }
+
+        // Filter by status
+        if (status) {
+            filter.status = status;
+        }
+
+        const tasks = await Task.find(filter);
 
         return res.status(200).json({
             success: true,
             count: tasks.length,
             tasks
         });
+
     } catch (error) {
+
         return res.status(500).json({
             success: false,
             message: error.message
@@ -92,6 +113,72 @@ exports.updateTask = async (req, res) => {
 
         });
 
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+exports.deleteTask = async (req, res) => {
+    try {
+        const{ id } = req.params;
+
+        const task = await Task.findById(id);
+
+        if(!task) {
+            return res.status(404).json({
+                success: false,
+                message: "Task not found "
+            });
+        }
+
+        if(task.user.toString() !== req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authorized to delete this task"
+            });
+        }
+
+        await task.deleteOne();
+
+        return res.status(200).json({
+            success: true,
+            message: "Task deleted successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+exports.getTaskById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const task = await Task.findById(id);
+
+        if(!task) {
+            return res.status(404).json({
+                success: false,
+                message: "Task not found"
+            });
+        }
+
+        if (task.user.toString() !== req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authorized"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            task
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,
