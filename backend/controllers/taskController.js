@@ -41,13 +41,13 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
 
-        const { search, status } = req.query;
+        const { search, status, page = 1, limit = 5, sort = "latest" } = req.query;
 
         let filter = {
             user: req.user.id
         };
 
-        // Search by title
+        // Search
         if (search) {
             filter.title = {
                 $regex: search,
@@ -55,16 +55,35 @@ exports.getAllTasks = async (req, res) => {
             };
         }
 
-        // Filter by status
+        // Filter
         if (status) {
             filter.status = status;
         }
 
-        const tasks = await Task.find(filter);
+        // Sorting
+        let sortOption = {};
+
+        if (sort === "latest") {
+            sortOption = { createdAt: -1 };
+        } else if (sort === "oldest") {
+            sortOption = { createdAt: 1 };
+        }
+
+        // Pagination
+        const skip = (page - 1) * limit;
+
+        const tasks = await Task.find(filter)
+            .sort(sortOption)
+            .skip(skip)
+            .limit(Number(limit));
+
+        const totalTasks = await Task.countDocuments(filter);
 
         return res.status(200).json({
             success: true,
-            count: tasks.length,
+            currentPage: Number(page),
+            totalPages: Math.ceil(totalTasks / limit),
+            totalTasks,
             tasks
         });
 
@@ -74,6 +93,7 @@ exports.getAllTasks = async (req, res) => {
             success: false,
             message: error.message
         });
+
     }
 };
 
