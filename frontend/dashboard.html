@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow">
+        <div class="max-w-7xl mx-auto flex justify-between items-center p-5">
+
+            <h1 class="text-2xl font-bold">
+                Task Manager
+            </h1>
+
+            <div class="flex items-center gap-5">
+
+                <span id="welcomeUser" class="font-semibold">
+                    Welcome
+                </span>
+
+                <button id="logoutBtn"
+                    class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto mt-10">
+
+        <!-- Add Task -->
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="text-2xl font-bold mb-5">
+                Add New Task
+            </h2>
+
+            <form id="taskForm">
+
+                <input
+                    id="title"
+                    type="text"
+                    placeholder="Task Title"
+                    class="w-full border rounded-lg p-3 mb-4">
+
+                <textarea
+                    id="description"
+                    placeholder="Task Description"
+                    class="w-full border rounded-lg p-3 mb-4"></textarea>
+
+                <select
+                    id="status"
+                    class="w-full border rounded-lg p-3 mb-4">
+
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+
+                </select>
+
+                <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+
+                    Add Task
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Search -->
+        <div class="flex gap-4 mt-8">
+
+            <input
+                id="search"
+                type="text"
+                placeholder="Search Task..."
+                class="flex-1 border rounded-lg p-3">
+
+            <select
+                id="filterStatus"
+                class="border rounded-lg p-3">
+
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+
+            </select>
+
+        </div>
+
+        <!-- Tasks -->
+        <div
+            id="taskContainer"
+            class="mt-8 space-y-4">
+
+        </div>
+
+    </div>
+
+    <script src="./js/dashboard.js"></script>
+
+</body>
+
+</html>
