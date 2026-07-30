@@ -41,7 +41,13 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
     try {
 
-        const { search, status, page = 1, limit = 5, sort = "latest" } = req.query;
+        const {
+            search,
+            status,
+            page = 1,
+            limit = 5,
+            sort = "latest"
+        } = req.query;
 
         let filter = {
             user: req.user.id
@@ -70,21 +76,50 @@ exports.getAllTasks = async (req, res) => {
         }
 
         // Pagination
-        const skip = (page - 1) * limit;
+        const skip = (page - 1) * Number(limit);
 
         const tasks = await Task.find(filter)
             .sort(sortOption)
             .skip(skip)
             .limit(Number(limit));
 
+        // Total tasks according to current search/filter
         const totalTasks = await Task.countDocuments(filter);
 
+        // Dashboard statistics (ALL tasks of logged-in user)
+        const pendingTasks = await Task.countDocuments({
+            user: req.user.id,
+            status: "Pending"
+        });
+
+        const progressTasks = await Task.countDocuments({
+            user: req.user.id,
+            status: "In Progress"
+        });
+
+        const completedTasks = await Task.countDocuments({
+            user: req.user.id,
+            status: "Completed"
+        });
+
         return res.status(200).json({
+
             success: true,
+
             currentPage: Number(page),
-            totalPages: Math.ceil(totalTasks / limit),
+
+            totalPages: Math.ceil(totalTasks / Number(limit)),
+
             totalTasks,
+
+            pendingTasks,
+
+            progressTasks,
+
+            completedTasks,
+
             tasks
+
         });
 
     } catch (error) {

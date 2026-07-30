@@ -26,8 +26,7 @@
                     Welcome
                 </span>
 
-                <button id="logoutBtn"
-                    class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">
+                <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">
                     Logout
                 </button>
 
@@ -35,6 +34,36 @@
 
         </div>
     </nav>
+
+    <!-- ================= STATS ================= -->
+
+    <div class="max-w-6xl mx-auto mt-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+
+            <div class="bg-white shadow rounded-xl p-5">
+                <h2 class="text-gray-500">Total Tasks</h2>
+                <p id="totalTasks" class="text-3xl font-bold text-blue-600">0</p>
+            </div>
+
+            <div class="bg-white shadow rounded-xl p-5">
+                <h2 class="text-gray-500">Pending</h2>
+                <p id="pendingTasks" class="text-3xl font-bold text-yellow-500">0</p>
+            </div>
+
+            <div class="bg-white shadow rounded-xl p-5">
+                <h2 class="text-gray-500">In Progress</h2>
+                <p id="progressTasks" class="text-3xl font-bold text-purple-500">0</p>
+            </div>
+
+            <div class="bg-white shadow rounded-xl p-5">
+                <h2 class="text-gray-500">Completed</h2>
+                <p id="completedTasks" class="text-3xl font-bold text-green-600">0</p>
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto mt-10">
@@ -48,20 +77,12 @@
 
             <form id="taskForm">
 
-                <input
-                    id="title"
-                    type="text"
-                    placeholder="Task Title"
-                    class="w-full border rounded-lg p-3 mb-4">
+                <input id="title" type="text" placeholder="Task Title" class="w-full border rounded-lg p-3 mb-4">
 
-                <textarea
-                    id="description"
-                    placeholder="Task Description"
+                <textarea id="description" placeholder="Task Description"
                     class="w-full border rounded-lg p-3 mb-4"></textarea>
 
-                <select
-                    id="status"
-                    class="w-full border rounded-lg p-3 mb-4">
+                <select id="status" class="w-full border rounded-lg p-3 mb-4">
 
                     <option value="Pending">Pending</option>
                     <option value="In Progress">In Progress</option>
@@ -69,8 +90,7 @@
 
                 </select>
 
-                <button
-                    type="submit"
+                <button id="submitBtn" type="submit"
                     class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
 
                     Add Task
@@ -82,33 +102,39 @@
         </div>
 
         <!-- Search -->
+
+
         <div class="flex gap-4 mt-8">
 
-            <input
-                id="search"
-                type="text"
-                placeholder="Search Task..."
-                class="flex-1 border rounded-lg p-3">
+            <input id="search" type="text" placeholder="Search Task..." class="flex-1 border rounded-lg p-3">
 
-            <select
-                id="filterStatus"
-                class="border rounded-lg p-3">
+            <select id="filterStatus" class="border rounded-lg p-3">
 
                 <option value="">All</option>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+
+            </select>
+
+            <select id="sortTasks" class="border rounded-lg p-3">
+
+                <option value="latest">Latest</option>
+                <option value="oldest">Oldest</option>
 
             </select>
 
         </div>
 
         <!-- Tasks -->
-        <div
-            id="taskContainer"
-            class="mt-8 space-y-4">
+        <div id="taskContainer" class="mt-8 space-y-4">
 
         </div>
+
+        <div id="pagination" class="flex justify-center items-center gap-3 mt-8">
+        </div>
+
+
 
     </div>
 
