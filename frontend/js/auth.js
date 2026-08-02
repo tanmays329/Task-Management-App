@@ -12,6 +12,8 @@ if (registerForm) {
 
         try {
 
+            showLoader();
+
             const response = await fetch("http://localhost:5000/api/auth/register", {
 
                 method: "POST",
@@ -27,26 +29,28 @@ if (registerForm) {
                 })
 
             });
-
+            
+            hideLoader();
             const data = await response.json();
 
             if (data.success) {
 
-                alert("Registration Successful!");
+                showToast("Registration Successful!");
 
                 window.location.href = "login.html";
 
             } else {
 
-                alert(data.message);
+                showToast(data.message);
 
             }
 
         } catch (error) {
+            hideLoader();
 
             console.error(error);
 
-            alert("Something went wrong.");
+            showToast("Something went wrong.");
 
         }
 
@@ -93,13 +97,13 @@ if (loginForm) {
                 // Store logged-in user
                 localStorage.setItem("user", JSON.stringify(data.user));
 
-                alert("Login Successful!");
+                showToast("Login Successful!");
 
                 window.location.href = "dashboard.html";
 
             } else {
 
-                alert(data.message);
+                showToast(data.message);
 
             }
 
@@ -107,7 +111,7 @@ if (loginForm) {
 
             console.error(error);
 
-            alert("Something went wrong");
+            showToast("Something went wrong");
 
         }
 
