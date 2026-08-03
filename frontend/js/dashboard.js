@@ -32,6 +32,32 @@ logoutBtn.addEventListener("click", () => {
   window.location.href = "login.html";
 });
 
+function showLoader() {
+
+    document
+        .getElementById("loader")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("loader")
+        .classList.add("flex");
+
+}
+
+function hideLoader() {
+
+    document
+        .getElementById("loader")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loader")
+        .classList.remove("flex");
+
+}
+
+
+
 // ================= GET TASKS =================
 async function getTasks(page = 1) {
   showLoader();
@@ -237,15 +263,37 @@ function displayTasks(tasks) {
         `;
   });
 }
+// function updateStats(total, pending, progress, completed) {
+//   document.getElementById("totalTasks").innerText = total;
+
+//   document.getElementById("pendingTasks").innerText = pending;
+
+//   document.getElementById("progressTasks").innerText = progress;
+
+//   document.getElementById("completedTasks").innerText = completed;
+// }
+
+
 function updateStats(total, pending, progress, completed) {
-  document.getElementById("totalTasks").innerText = total;
 
-  document.getElementById("pendingTasks").innerText = pending;
+    console.log("Updating stats...");
 
-  document.getElementById("progressTasks").innerText = progress;
+    const totalEl = document.getElementById("totalTasks");
+    const pendingEl = document.getElementById("pendingTasks");
+    const progressEl = document.getElementById("progressTasks");
+    const completedEl = document.getElementById("completedTasks");
 
-  document.getElementById("completedTasks").innerText = completed;
+    console.log(totalEl, pendingEl, progressEl, completedEl);
+
+    totalEl.innerText = total;
+    pendingEl.innerText = pending;
+    progressEl.innerText = progress;
+    completedEl.innerText = completed;
+
+    console.log("Updated!");
 }
+
+
 
 function renderPagination(currentPage, totalPages) {
   const pagination = document.getElementById("pagination");
@@ -365,6 +413,15 @@ function editTask(id) {
 
 }
 
+document.getElementById("cancelEdit").addEventListener("click", () => {
+
+    document.getElementById("editModal").classList.add("hidden");
+
+    document.getElementById("editModal").classList.remove("flex");
+
+});
+
+
 document.getElementById("saveEdit").addEventListener("click", async () => {
   showLoader();
 
@@ -390,6 +447,8 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
         }),
       },
     );
+
+
 
     const data = await response.json();
 
