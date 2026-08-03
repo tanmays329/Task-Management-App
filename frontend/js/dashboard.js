@@ -33,30 +33,16 @@ logoutBtn.addEventListener("click", () => {
 });
 
 function showLoader() {
+  document.getElementById("loader").classList.remove("hidden");
 
-    document
-        .getElementById("loader")
-        .classList.remove("hidden");
-
-    document
-        .getElementById("loader")
-        .classList.add("flex");
-
+  document.getElementById("loader").classList.add("flex");
 }
 
 function hideLoader() {
+  document.getElementById("loader").classList.add("hidden");
 
-    document
-        .getElementById("loader")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loader")
-        .classList.remove("flex");
-
+  document.getElementById("loader").classList.remove("flex");
 }
-
-
 
 // ================= GET TASKS =================
 async function getTasks(page = 1) {
@@ -109,6 +95,7 @@ taskForm.addEventListener("submit", async (e) => {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
   const status = document.getElementById("status").value;
+  const dueDate = document.getElementById("dueDate").value;
   const sort = document.getElementById("sortTasks").value;
 
   if (!title || !description) {
@@ -134,6 +121,7 @@ taskForm.addEventListener("submit", async (e) => {
         title,
         description,
         status,
+        dueDate,
       }),
     });
 
@@ -202,9 +190,26 @@ function displayTasks(tasks) {
       year: "numeric",
     });
 
+    const dueDate = task.dueDate
+      ? new Date(task.dueDate).toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : "No Due Date";
+
+      const isOverdue =
+    task.dueDate &&
+    new Date(task.dueDate) < new Date() &&
+    task.status !== "Completed";
+
+const borderClass = isOverdue
+    ? "border-l-4 border-red-500"
+    : "";
+
     taskContainer.innerHTML += `
 
-        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100">
+        <div class="bg-white rounded-2xl shadow-md ${borderClass} hover:shadow-xl transition-all duration-300 p-6 border border-gray-100">
 
             <div class="flex justify-between items-start">
 
@@ -230,11 +235,13 @@ function displayTasks(tasks) {
 
             <div class="flex justify-between items-center mt-6">
 
-                <span class="text-sm text-gray-400">
+               <div class="text-sm text-gray-400">
 
-                    Created ${createdDate}
+    <p>Created: ${createdDate}</p>
 
-                </span>
+    <p>Due: ${dueDate}</p>
+
+</div>
 
                 <div class="flex gap-3">
 
@@ -273,27 +280,23 @@ function displayTasks(tasks) {
 //   document.getElementById("completedTasks").innerText = completed;
 // }
 
-
 function updateStats(total, pending, progress, completed) {
+  console.log("Updating stats...");
 
-    console.log("Updating stats...");
+  const totalEl = document.getElementById("totalTasks");
+  const pendingEl = document.getElementById("pendingTasks");
+  const progressEl = document.getElementById("progressTasks");
+  const completedEl = document.getElementById("completedTasks");
 
-    const totalEl = document.getElementById("totalTasks");
-    const pendingEl = document.getElementById("pendingTasks");
-    const progressEl = document.getElementById("progressTasks");
-    const completedEl = document.getElementById("completedTasks");
+  console.log(totalEl, pendingEl, progressEl, completedEl);
 
-    console.log(totalEl, pendingEl, progressEl, completedEl);
+  totalEl.innerText = total;
+  pendingEl.innerText = pending;
+  progressEl.innerText = progress;
+  completedEl.innerText = completed;
 
-    totalEl.innerText = total;
-    pendingEl.innerText = pending;
-    progressEl.innerText = progress;
-    completedEl.innerText = completed;
-
-    console.log("Updated!");
+  console.log("Updated!");
 }
-
-
 
 function renderPagination(currentPage, totalPages) {
   const pagination = document.getElementById("pagination");
@@ -397,30 +400,28 @@ document.getElementById("cancelDelete").addEventListener("click", () => {
 // ================= EDIT TASK =================
 
 function editTask(id) {
+  const task = documentTasks.find((task) => task._id === id);
 
-    const task = documentTasks.find(task => task._id === id);
+  if (!task) return;
 
-    if (!task) return;
+  editingTaskId = id;
 
-    editingTaskId = id;
+  document.getElementById("editTitle").value = task.title;
+  document.getElementById("editDescription").value = task.description;
+  document.getElementById("editStatus").value = task.status;
+  document.getElementById("editDueDate").value = task.dueDate
+    ? task.dueDate.split("T")[0]
+    : "";
 
-    document.getElementById("editTitle").value = task.title;
-    document.getElementById("editDescription").value = task.description;
-    document.getElementById("editStatus").value = task.status;
-
-    document.getElementById("editModal").classList.remove("hidden");
-    document.getElementById("editModal").classList.add("flex");
-
+  document.getElementById("editModal").classList.remove("hidden");
+  document.getElementById("editModal").classList.add("flex");
 }
 
 document.getElementById("cancelEdit").addEventListener("click", () => {
+  document.getElementById("editModal").classList.add("hidden");
 
-    document.getElementById("editModal").classList.add("hidden");
-
-    document.getElementById("editModal").classList.remove("flex");
-
+  document.getElementById("editModal").classList.remove("flex");
 });
-
 
 document.getElementById("saveEdit").addEventListener("click", async () => {
   showLoader();
@@ -444,11 +445,11 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
           description: document.getElementById("editDescription").value,
 
           status: document.getElementById("editStatus").value,
+
+          dueDate: document.getElementById("editDueDate").value,
         }),
       },
     );
-
-
 
     const data = await response.json();
 

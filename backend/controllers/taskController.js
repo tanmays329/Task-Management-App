@@ -4,7 +4,7 @@ exports.createTask = async (req, res) => {
     try {
 
         // Get data from request body
-        const { title, description, status } = req.body;
+        const { title, description, status, dueDate } = req.body;
 
         // Validation
         if (!title) {
@@ -19,6 +19,7 @@ exports.createTask = async (req, res) => {
             title,
             description,
             status,
+            dueDate,
             user: req.user.id
         });
 
@@ -137,7 +138,7 @@ exports.updateTask = async (req, res) => {
 
         const { id } = req.params;
 
-        const { title, description, status } = req.body;
+        const { title, description, status, dueDate } = req.body;
 
         const task = await Task.findById(id);
 
@@ -158,6 +159,7 @@ exports.updateTask = async (req, res) => {
         task.title = title || task.title;
         task.description = description || task.description;
         task.status = status || task.status;
+        task.dueDate = dueDate || task.dueDate;
 
         await task.save();
 
