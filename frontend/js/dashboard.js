@@ -54,7 +54,7 @@ async function getTasks(page = 1) {
     const sort = document.getElementById("sortTasks").value;
 
     const response = await fetch(
-      `http://localhost:5000/api/tasks?search=${search}&status=${status}&sort=${sort}&page=${page}&limit=5`,
+      `https://task-management-app-jvb6.onrender.com/api/tasks?search=${search}&status=${status}&sort=${sort}&page=${page}&limit=5`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ taskForm.addEventListener("submit", async (e) => {
   try {
     showLoader();
 
-    let url = "http://localhost:5000/api/tasks";
+    let url = "https://task-management-app-jvb6.onrender.com/api/tasks";
     let method = "POST";
 
     const response = await fetch(url, {
@@ -358,7 +358,7 @@ document.getElementById("confirmDelete").addEventListener("click", async () => {
     showLoader();
 
     const response = await fetch(
-      `http://localhost:5000/api/tasks/${deleteTaskId}`,
+      `https://task-management-app-jvb6.onrender.com/api/tasks/${deleteTaskId}`,
 
       {
         method: "DELETE",
@@ -428,7 +428,7 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/tasks/${editingTaskId}`,
+      `https://task-management-app-jvb6.onrender.com/api/tasks/${editingTaskId}`,
 
       {
         method: "PUT",

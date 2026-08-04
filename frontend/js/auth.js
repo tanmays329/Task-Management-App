@@ -14,7 +14,7 @@ if (registerForm) {
 
             showLoader();
 
-            const response = await fetch("http://localhost:5000/api/auth/register", {
+            const response = await fetch("https://task-management-app-jvb6.onrender.com/api/auth/register", {
 
                 method: "POST",
 
@@ -71,7 +71,7 @@ if (loginForm) {
 
         try {
 
-            const response = await fetch("http://localhost:5000/api/auth/login", {
+            const response = await fetch("https://task-management-app-jvb6.onrender.com/api/auth/login", {
 
                 method: "POST",
 
