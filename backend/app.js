@@ -9,15 +9,7 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
-app.use(
-    cors({
-        origin: [
-            "https://task-management-app-jvb6.onrender.com",
-            "https://task-management-opu1zc87c-tanmays329s-projects.vercel.app/"
-        ],
-        credentials: true
-    })
-);
+app.use(cors());
 app.use(express.json());      // <-- This must come BEFORE routes
 
 app.use("/api/auth", authRoutes);
