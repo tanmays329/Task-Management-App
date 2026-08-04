@@ -1,27 +1,17 @@
 function showLoader() {
+    const loader = document.getElementById("loader");
 
-    document
-        .getElementById("loader")
-        .classList
-        .remove("hidden");
+    if (!loader) return;
 
-    document
-        .getElementById("loader")
-        .classList
-        .add("flex");
-
+    loader.classList.remove("hidden");
+    loader.classList.add("flex");
 }
 
 function hideLoader() {
+    const loader = document.getElementById("loader");
 
-    document
-        .getElementById("loader")
-        .classList
-        .add("hidden");
+    if (!loader) return;
 
-    document
-        .getElementById("loader")
-        .classList
-        .remove("flex");
-
+    loader.classList.add("hidden");
+    loader.classList.remove("flex");
 }
