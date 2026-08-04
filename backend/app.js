@@ -12,7 +12,7 @@ const app = express();
 app.use(
     cors({
         origin: [
-            "http://localhost:3000",
+            "https://task-management-app-jvb6.onrender.com",
             "https://task-management-opu1zc87c-tanmays329s-projects.vercel.app/"
         ],
         credentials: true
