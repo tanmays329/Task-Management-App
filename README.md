@@ -1,4 +1,4 @@
-# TaskFlow - Task Management Web Application
+# TaskFlow - Task Management Web Application.
 
 TaskFlow is a full-stack task management application that helps users organize and manage their daily tasks. It provides secure authentication, task management, due dates, pagination, and a responsive user interface.
 
